@@ -47,12 +47,22 @@ public class Sistema {
         return null;
     }
 
-    public Admin getProd(String cpf) {
-        for(Admin a : this.adms) {
-            if (cpf.equals(a.getCPF())) return a;
+    public Produto getProd(String cod){
+        for(Produto p : this.prods) {
+            if (p.getCod().equals(cod)) return p;
         }
+    }
 
-        return null;
+    public String gerarCodigoProduto(){
+        return "PROD-" + prods.size()+1 ;
+    }
+
+    public String gerarCodigoPedido(){
+        return "PEDIDO-" + pedidos.size()+1 ;
+    }
+
+    public void addPedido(Pedido p){
+
     }
 
 }
