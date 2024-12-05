@@ -204,21 +204,18 @@ public class Entrada {
     public void cadProduto(Sistema s){
         String produto = this.lerLinha("Digite o nome do produto: ");
 
-
-
-        while (s.getProduto(produto) != null) {
+        while (s.getProd(produto) != null) {
             produto = this.lerLinha("Produto já existente. Indique outro produto: ");
         }
 
         String nome = this.lerLinha("Digite o nome do produto: ");
-        String qtd = this.lerLinha("Digite a quantidade em estoque: ");
-        String valor = this.lerLinha("Digite o valor do produto: ");
+        int qtd = this.lerInteiro("Digite a quantidade em estoque: ");
+        double valor = this.lerDouble("Digite o valor do produto: ");
 
-        Produto p = new Produto(gerarCodigoPedido(), nome, qtd,valor);
+        Produto p = new Produto(nome, qtd, valor,s);
         s.addProd(p);
 
         System.out.println("Produto " + p + " cadastrado com sucesso.");
-
 
     }
 
