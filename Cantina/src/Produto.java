@@ -1,7 +1,6 @@
 public class Produto {
 
-    private String cod;
-    private String nome;
+    private String cod, nome;
     private int qnt;
     private double valor;
 
