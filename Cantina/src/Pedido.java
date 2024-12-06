@@ -8,10 +8,11 @@ public class Pedido {
     private ArrayList<Item> carrinho;
     private boolean entregue;
 
-    public Pedido(Aluno cliente, Sala sala, Sistema s) {
+    public Pedido(Sistema s) {
         this.cod = s.gerarCodigoPedido();
-        this.cliente = cliente;
-        this.s = sala;
+        this.cliente = null;
+        this.entregador = null;
+        this.s = null;
         this.carrinho = new ArrayList<>();
         this.entregue = false;
     }
@@ -34,4 +35,7 @@ public class Pedido {
         return !(this.entregue) && this.entregador == null;
     }
 
+    public String getCod() {
+        return cod;
+    }
 }

@@ -27,6 +27,10 @@ public class Sistema {
         this.prods.add(p);
     }
 
+    public void addSala(Sala s){
+        this.salas.add(s);
+    }
+
     public boolean sistemaVazio() {
         return this.adms.size() == 0;
     }
@@ -50,6 +54,22 @@ public class Sistema {
     public Produto getProd(String cod){
         for(Produto p : this.prods) {
             if (p.getCod().equals(cod)) return p;
+        }
+
+        return null;
+    }
+
+    public Pedido getPedido(String cod){
+        for(Pedido p : this.pedidos) {
+            if (p.getCod().equals(cod)) return p;
+        }
+
+        return null;
+    }
+
+    public Sala getSala(String nome){
+        for(Sala c : this.salas) {
+            if (c.toString().equals(nome)) return c;
         }
 
         return null;

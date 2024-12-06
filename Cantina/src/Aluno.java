@@ -9,4 +9,19 @@ public class Aluno extends Usuario{
     public String toString() {
         return super.toString() + " (Saldo: R$" + String.format("%.2f", this.saldo) + ")";
     }
+
+    public void inserirSaldo(double valor) {
+        this.saldo += valor;
+    }
+    public boolean retirarSaldo(double valor) {
+        if(valor <= this.saldo){
+            this.saldo -= valor;
+            System.out.println("Saque na conta do aluno " + this.nome + " realizado com sucesso. Novo saldo: " + this.saldo);
+            return true;
+        }
+        else{
+            System.out.println("Erro: Saque na conta do aluno  " + this.nome + " não foi realizado. Valor disponível: " + this.saldo);
+            return false;
+        }
+    }
 }

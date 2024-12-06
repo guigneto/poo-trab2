@@ -115,7 +115,7 @@ public class Entrada {
             if (op == 1) cadAdmin(s);
             if (op == 2) cadAluno(s);
             if (op == 3) cadProduto(s);
-            if (op == 4) {/*cadSala(s);*/}
+            if (op == 4) cadSala(s);
             if (op < 0 || op > 4) System.out.println("Opção inválida. Tente novamente: ");
 
             op = this.lerInteiro(msg);
@@ -201,22 +201,6 @@ public class Entrada {
         System.out.println("Usuário " + a + " criado com sucesso.");
     }
 
-    public void cadProduto(Sistema s){
-        String nome = this.lerLinha("Digite o nome do produto: ");
-
-        while (s.getProd(nome) != null) {
-            nome = this.lerLinha("Produto já existente. Indique outro produto: ");
-        }
-
-        int qtd = this.lerInteiro("Digite a quantidade em estoque: ");
-        double valor = this.lerDouble("Digite o valor unitário do produto: ");
-
-        Produto p = new Produto(nome, qtd, valor,s);
-        s.addProd(p);
-
-        System.out.println(p + " criado com sucesso.");
-    }
-
     public void cadAluno(Sistema s){
         System.out.println("\n** Cadastrando um novo aluno **\n");
         String cpf = this.lerLinha("Digite o cpf: ");
@@ -232,5 +216,52 @@ public class Entrada {
         s.addAluno(a);
 
         System.out.println("Usuário " + a + " criado com sucesso.");
+    }
+
+    public void cadProduto(Sistema s){
+        System.out.println("\n** Cadastrando um novo produto **\n");
+        String nome = this.lerLinha("Digite o nome do produto: ");
+
+        while (s.getProd(nome) != null) {
+            nome = this.lerLinha("Produto já existente. Indique outro produto: ");
+        }
+
+        int qtd = this.lerInteiro("Digite a quantidade em estoque: ");
+        double valor = this.lerDouble("Digite o valor unitário do produto: ");
+
+        Produto p = new Produto(nome, qtd, valor,s);
+        s.addProd(p);
+
+        System.out.println(p + " criado com sucesso.");
+    }
+
+    public void cadSala(Sistema s){
+        System.out.println("\n** Cadastrando uma nova sala **\n");
+        String bloco = this.lerLinha("Digite o bloco (ex: para 904T, digite 9): ");
+
+        String sala = this.lerLinha("Digite a sala (ex: para 904T, digite 04): ");
+        String andar = this.lerLinha("Digite o andar (ex: para 904T, digite T): ");
+
+        Sala c = new Sala(bloco, sala, andar);
+        s.addSala(c);
+
+        System.out.println("Sala " + c + " criada com sucesso.");
+    }
+
+
+
+    /*
+    public void fazerPedido(Aluno a, Sistema s){
+        Pedido p = new Pedido(s);
+        lerSala(s);
+
+    }
+    */
+
+    public void lerSala(Sistema s){
+        System.out.println("Salas disponíveis:");
+        for(Sala c : s.salas) {
+            System.out.println(c);
+        }
     }
 }
