@@ -51,6 +51,8 @@ public class Sistema {
         for(Produto p : this.prods) {
             if (p.getCod().equals(cod)) return p;
         }
+
+        return null;
     }
 
     public String gerarCodigoProduto(){
@@ -60,9 +62,4 @@ public class Sistema {
     public String gerarCodigoPedido(){
         return "PEDIDO-" + pedidos.size()+1 ;
     }
-
-    public void addPedido(Pedido p){
-
-    }
-
 }

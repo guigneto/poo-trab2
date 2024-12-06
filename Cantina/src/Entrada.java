@@ -202,13 +202,12 @@ public class Entrada {
     }
 
     public void cadProduto(Sistema s){
-        String produto = this.lerLinha("Digite o nome do produto: ");
+        String nome = this.lerLinha("Digite o nome do produto: ");
 
-        while (s.getProd(produto) != null) {
-            produto = this.lerLinha("Produto já existente. Indique outro produto: ");
+        while (s.getProd(nome) != null) {
+            nome = this.lerLinha("Produto já existente. Indique outro produto: ");
         }
 
-        String nome = this.lerLinha("Digite o nome do produto: ");
         int qtd = this.lerInteiro("Digite a quantidade em estoque: ");
         double valor = this.lerDouble("Digite o valor do produto: ");
 
