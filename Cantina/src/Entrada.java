@@ -209,13 +209,12 @@ public class Entrada {
         }
 
         int qtd = this.lerInteiro("Digite a quantidade em estoque: ");
-        double valor = this.lerDouble("Digite o valor do produto: ");
+        double valor = this.lerDouble("Digite o valor unitário do produto: ");
 
         Produto p = new Produto(nome, qtd, valor,s);
         s.addProd(p);
 
-        System.out.println("Produto " + p + " cadastrado com sucesso.");
-
+        System.out.println(p + " criado com sucesso.");
     }
 
     public void cadAluno(Sistema s){
@@ -233,10 +232,5 @@ public class Entrada {
         s.addAluno(a);
 
         System.out.println("Usuário " + a + " criado com sucesso.");
-
-
     }
-
-
-
 }

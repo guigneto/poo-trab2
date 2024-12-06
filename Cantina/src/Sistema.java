@@ -56,10 +56,10 @@ public class Sistema {
     }
 
     public String gerarCodigoProduto(){
-        return "PROD-" + prods.size()+1 ;
+        return "PROD-" + (prods.size()+1);
     }
 
     public String gerarCodigoPedido(){
-        return "PEDIDO-" + pedidos.size()+1 ;
+        return "PEDIDO-" + (pedidos.size()+1) ;
     }
 }

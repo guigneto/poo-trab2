@@ -12,6 +12,6 @@ public class Item {
     }
 
     public double valorTotal(){
-        return p.getValor() * this.qnt;
+        return this.p.getValor() * this.qnt;
     }
 }
