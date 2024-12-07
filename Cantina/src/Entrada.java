@@ -139,7 +139,7 @@ public class Entrada {
         int op = this.lerInteiro(msg);
 
         while (op != 0) {
-            if (op == 1) { fazerPedido(a, s); }
+            if (op == 1) { /*fazerPedido(a, s); */}
             if (op == 2) {/*entregarPedido(a, s);*/}
             if (op == 3) {/*listarPedidos(a, s);*/}
             if (op == 4) {/*inserirCredito(a, s);*/}
