@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
 public class Sistema {
-    ArrayList<Aluno> alunos;
-    ArrayList<Admin> adms;
-    ArrayList<Produto> prods;
-    ArrayList<Pedido> pedidos;
-    ArrayList<Sala> salas;
+    private ArrayList<Aluno> alunos;
+    private ArrayList<Admin> adms;
+    private ArrayList<Produto> prods;
+    private ArrayList<Pedido> pedidos;
+    private ArrayList<Sala> salas;
 
     public Sistema() {
         this.alunos = new ArrayList<>();
