@@ -96,4 +96,24 @@ public class Sistema {
             System.out.println(s);
         }
     }
+
+    public ArrayList<Pedido> filtrarPedidos(boolean disponivel) {
+        ArrayList<Pedido> pedidosFiltrados = new ArrayList<>();
+        for (Pedido pedido : pedidos) {
+            if (pedido.disponivel() == disponivel) {
+                pedidosFiltrados.add(pedido);
+            }
+        }
+        return pedidosFiltrados;
+    }
+
+    public ArrayList<Pedido> filtrarPedidos(Aluno a) {
+        ArrayList<Pedido> pedidosFiltrados = new ArrayList<>();
+        for (Pedido pedido : pedidos) {
+            if (pedido.getCliente() == a) {
+                pedidosFiltrados.add(pedido);
+            }
+        }
+        return pedidosFiltrados;
+    }
 }

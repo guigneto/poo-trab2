@@ -38,4 +38,8 @@ public class Pedido {
     public String getCod() {
         return cod;
     }
+
+    public Aluno getCliente() {
+        return cliente;
+    }
 }

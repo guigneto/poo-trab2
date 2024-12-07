@@ -19,7 +19,7 @@ public class Entrada {
     public Entrada() {
         try {
             // Se houver um arquivo input.txt na pasta corrente, o Scanner vai ler dele.
-            this.input = new Scanner(new FileInputStream("input.txt")).useLocale(Locale.US);
+            this.input = new Scanner(new FileInputStream("Cantina/input.txt")).useLocale(Locale.US);
             // NAO ALTERE A LOCALICAÇÃO DO ARQUIVO!!
         } catch (FileNotFoundException e) {
             // Caso contrário, vai ler do teclado.
@@ -248,6 +248,11 @@ public class Entrada {
         System.out.println("Sala " + c + " criada com sucesso.");
     }
 
+
+    /***************/
+    /*** ALUNOS ****/
+    /***************/
+
     public void fazerPedido(Aluno a, Sistema s){
         s.listarSalas();
         String msg = "\n*********************\n" +
@@ -264,5 +269,7 @@ public class Entrada {
 
             op = this.lerInteiro(msg);
         }
+
+        s.listarProdutos();
     }
 }
