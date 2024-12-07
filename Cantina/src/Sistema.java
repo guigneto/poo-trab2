@@ -31,6 +31,10 @@ public class Sistema {
         this.salas.add(s);
     }
 
+    public void addPedido(Pedido p){
+        this.pedidos.add(p);
+    }
+
     public boolean sistemaVazio() {
         return this.adms.size() == 0;
     }

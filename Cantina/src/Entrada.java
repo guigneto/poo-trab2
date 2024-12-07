@@ -142,7 +142,7 @@ public class Entrada {
         while (op != 0) {
             if (op == 1) { fazerPedido(a, s);}
             if (op == 2) {/*entregarPedido(a, s);*/}
-            if (op == 3) {/*listarPedidos(a, s);*/}
+            if (op == 3) {listarPedidos(a, s);}
             if (op == 4) {/*inserirCredito(a, s);*/}
             if (op < 0 || op > 4) System.out.println("Opção inválida. Tente novamente: ");
 
@@ -311,6 +311,8 @@ public class Entrada {
 
             op = this.lerInteiro(msg);
         }
+
+        s.addPedido(pedido);
     }
 
     public void adicionarItem(ArrayList<Item> carrinho, Produto p, int qntItens){
@@ -324,4 +326,14 @@ public class Entrada {
             p.retirarDeEstoque(qntItens);
         }
     }
+
+    /*
+    public void listarPedidos(Aluno a, Sistema s){
+        System.out.println("Pedidos: ");
+        ArrayList<Pedido> pedidos = s.filtrarPedidos(a);
+        for(Pedido pedido : pedidos) {
+            System.out.println(pedido);
+        }
+    }
+    */
 }
