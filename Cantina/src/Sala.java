@@ -19,7 +19,7 @@ public class Sala {
         return andar;
     }
 
-    public String getNome() {
+    public String toString() {
         return this.bloco +  this.sala +  this.andar;
     }
 }

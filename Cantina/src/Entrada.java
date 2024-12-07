@@ -139,7 +139,7 @@ public class Entrada {
         int op = this.lerInteiro(msg);
 
         while (op != 0) {
-            if (op == 1) {/*fazerPedido(a, s);*/}
+            if (op == 1) { fazerPedido(a, s); }
             if (op == 2) {/*entregarPedido(a, s);*/}
             if (op == 3) {/*listarPedidos(a, s);*/}
             if (op == 4) {/*inserirCredito(a, s);*/}
@@ -248,20 +248,21 @@ public class Entrada {
         System.out.println("Sala " + c + " criada com sucesso.");
     }
 
-
-
-    /*
     public void fazerPedido(Aluno a, Sistema s){
-        Pedido p = new Pedido(s);
-        lerSala(s);
+        s.listarSalas();
+        String msg = "\n*********************\n" +
+                "Escolha uma opção:\n" +
+                "1) Inserir produto no carrinho.\n" +
+                "2) Fechar pedido.\n";
 
-    }
-    */
+        int op = this.lerInteiro(msg);
 
-    public void lerSala(Sistema s){
-        System.out.println("Salas disponíveis:");
-        for(Sala c : s.salas) {
-            System.out.println(c);
+        while (op != 0) {
+            if (op == 1) {/*fazerPedido(a, s);*/};
+            if (op == 2) {/*fazerPedido(a, s);*/};
+            if (op < 0 || op > 4) System.out.println("Opção inválida. Tente novamente: ");
+
+            op = this.lerInteiro(msg);
         }
     }
 }

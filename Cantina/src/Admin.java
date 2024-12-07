@@ -6,8 +6,9 @@ public class Admin extends Usuario{
         this.email = email;
     }
 
+    public boolean validarAcesso(String pwd) { return this.getSenha().equals(pwd);}
+
     public String toString() {
         return super.toString() + " (ADMIN)";
     }
-
 }

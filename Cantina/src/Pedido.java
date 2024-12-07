@@ -8,9 +8,9 @@ public class Pedido {
     private ArrayList<Item> carrinho;
     private boolean entregue;
 
-    public Pedido(Sistema s) {
+    public Pedido(Sistema s, Aluno a) {
         this.cod = s.gerarCodigoPedido();
-        this.cliente = null;
+        this.cliente = a;
         this.entregador = null;
         this.s = null;
         this.carrinho = new ArrayList<>();

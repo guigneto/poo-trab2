@@ -8,8 +8,14 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public boolean validarAcesso(String s) {
-        return s.equals(this.senha);
+    public boolean validarAcesso(String s) { return s.equals(this.senha); }
+
+    public boolean alterarSenha(String atual, String nova) {
+        if (this.validarAcesso(atual)) {
+            this.senha = nova;
+            return true;
+        }
+        return false;
     }
 
     public String toString() {
@@ -18,5 +24,9 @@ public class Usuario {
 
     public String getCPF() {
         return this.cpf;
+    }
+
+    public String getSenha() {
+        return this.senha;
     }
 }

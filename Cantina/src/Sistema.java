@@ -82,4 +82,18 @@ public class Sistema {
     public String gerarCodigoPedido(){
         return "PEDIDO-" + (pedidos.size()+1) ;
     }
+
+    public void listarProdutos(){
+        System.out.println("Produtos disponíveis:");
+        for(Produto p : prods) {
+            System.out.println(p);
+        }
+    }
+
+    public void listarSalas(){
+        System.out.println("Salas disponíveis:");
+        for(Sala s : salas) {
+            System.out.println(s);
+        }
+    }
 }
