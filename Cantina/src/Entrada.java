@@ -1,5 +1,6 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -139,7 +140,7 @@ public class Entrada {
         int op = this.lerInteiro(msg);
 
         while (op != 0) {
-            if (op == 1) { /*fazerPedido(a, s); */}
+            if (op == 1) { fazerPedido(a, s);}
             if (op == 2) {/*entregarPedido(a, s);*/}
             if (op == 3) {/*listarPedidos(a, s);*/}
             if (op == 4) {/*inserirCredito(a, s);*/}
@@ -149,6 +150,10 @@ public class Entrada {
         }
     }
 
+    /**
+     * Realiza o login de um administrador no sistema.
+     * @param s: Um objeto da classe Sistema
+     */
     public void login(Sistema s) {
         System.out.println("\nBem vindo! Digite seus dados de login:");
         String cpf = this.lerLinha("CPF:");
@@ -201,6 +206,10 @@ public class Entrada {
         System.out.println("Usuário " + a + " criado com sucesso.");
     }
 
+    /**
+     * Lê os dados de um novo aluno e cadastra no sistema.
+     * @param s: Um objeto da classe Sistema
+     */
     public void cadAluno(Sistema s){
         System.out.println("\n** Cadastrando um novo aluno **\n");
         String cpf = this.lerLinha("Digite o cpf: ");
@@ -218,6 +227,10 @@ public class Entrada {
         System.out.println("Usuário " + a + " criado com sucesso.");
     }
 
+    /**
+     * Lê os dados de um novo produto e cadastra no sistema.
+     * @param s: Um objeto da classe Sistema
+     */
     public void cadProduto(Sistema s){
         System.out.println("\n** Cadastrando um novo produto **\n");
         String nome = this.lerLinha("Digite o nome do produto: ");
@@ -235,6 +248,10 @@ public class Entrada {
         System.out.println(p + " criado com sucesso.");
     }
 
+    /**
+     * Lê os dados de uma nova sala e cadastra no sistema.
+     * @param s: Um objeto da classe Sistema
+     */
     public void cadSala(Sistema s){
         System.out.println("\n** Cadastrando uma nova sala **\n");
         String bloco = this.lerLinha("Digite o bloco (ex: para 904T, digite 9): ");
@@ -248,13 +265,29 @@ public class Entrada {
         System.out.println("Sala " + c + " criada com sucesso.");
     }
 
-
     /***************/
     /*** ALUNOS ****/
     /***************/
 
+    /**
+     * Permite que um aluno faça um pedido no sistema.
+     * @param a: Um objeto da classe Aluno.
+     * @param s: Um objeto da classe Sistema.
+     */
     public void fazerPedido(Aluno a, Sistema s){
         s.listarSalas();
+
+        String nomeSala = this.lerLinha("Digite a sala: ");
+        Sala salaEscolhida = s.getSala(nomeSala);
+
+        if (salaEscolhida != null) {
+            System.out.println("Sala escolhida: " + salaEscolhida);
+        } else {
+            System.out.println("Sala não encontrada.");
+        }
+
+        Pedido pedido = new Pedido(a, salaEscolhida, s);
+
         String msg = "\n*********************\n" +
                 "Escolha uma opção:\n" +
                 "1) Inserir produto no carrinho.\n" +
@@ -262,14 +295,33 @@ public class Entrada {
 
         int op = this.lerInteiro(msg);
 
-        while (op != 0) {
-            if (op == 1) {/*fazerPedido(a, s);*/};
-            if (op == 2) {/*fazerPedido(a, s);*/};
-            if (op < 0 || op > 4) System.out.println("Opção inválida. Tente novamente: ");
+        while (op != 2) {
+            if (op == 1) {
+                ArrayList<Item> carrinho = pedido.getCarrinho();
+                s.listarProdutos();
+
+                String codProduto = this.lerLinha("Digite o código do produto: ");
+                Produto p = s.getProd(codProduto);
+
+                int qtdItens = this.lerInteiro("Digite a quantidade: ");
+                adicionarItem(carrinho,p, qtdItens);
+
+            }
+            if (op > 2 || op < 1) System.out.println("Opção inválida. Tente novamente: ");
 
             op = this.lerInteiro(msg);
         }
+    }
 
-        s.listarProdutos();
+    public void adicionarItem(ArrayList<Item> carrinho, Produto p, int qntItens){
+        int qntProds = p.getQnt();
+        if (qntProds<qntItens){
+            System.out.println("Erro não há" + qntItens + "itens disponíveis no estoque.");
+        }
+        else{
+            Item novoItem = new Item(p, qntItens);
+            carrinho.add(novoItem);
+            p.retirarDeEstoque(qntItens);
+        }
     }
 }

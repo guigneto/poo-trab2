@@ -8,11 +8,10 @@ public class Pedido {
     private ArrayList<Item> carrinho;
     private boolean entregue;
 
-    public Pedido(Sistema s, Aluno a) {
+    public Pedido(Aluno cliente, Sala sala, Sistema s) {
         this.cod = s.gerarCodigoPedido();
-        this.cliente = a;
-        this.entregador = null;
-        this.s = null;
+        this.cliente = cliente;
+        this.s = sala;
         this.carrinho = new ArrayList<>();
         this.entregue = false;
     }
@@ -41,5 +40,9 @@ public class Pedido {
 
     public Aluno getCliente() {
         return cliente;
+    }
+
+    public ArrayList<Item> getCarrinho(){
+        return this.carrinho;
     }
 }

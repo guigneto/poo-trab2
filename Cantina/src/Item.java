@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Item {
     private Produto p;
     private int qnt;
