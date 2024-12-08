@@ -9,11 +9,19 @@ public class Item {
         this.qnt = qnt;
     }
 
-    public String toString() {
-        return "Nome do Item: " + p.getNome() + " - Quantidade: " + this.qnt;
+    public Produto getP() {
+        return p;
+    }
+
+    public int getQnt() {
+        return qnt;
     }
 
     public double valorTotal(){
         return this.p.getValor() * this.qnt;
+    }
+
+    public String toString() {
+        return "Nome do Item: " + p.getNome() + " - Quantidade: " + this.qnt;
     }
 }
