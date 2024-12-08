@@ -12,7 +12,7 @@ public class Produto {
     }
 
     public String toString() {
-        return "Produto "+ this.cod + ": " + this.nome;
+        return this.cod + ": " + this.nome;
     }
 
     public void retirarDeEstoque(int qnt){
