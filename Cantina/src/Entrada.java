@@ -141,9 +141,9 @@ public class Entrada {
 
         while (op != 0) {
             if (op == 1) { fazerPedido(a, s);}
-            if (op == 2) {/*entregarPedido(a, s);*/}
+            if (op == 2) {entregarPedido(a, s);}
             if (op == 3) {listarPedidos(a, s);}
-            if (op == 4) {/*inserirCredito(a, s);*/}
+            if (op == 4) {inserirCredito(a, s);}
             if (op < 0 || op > 4) System.out.println("Opção inválida. Tente novamente: ");
 
             op = this.lerInteiro(msg);
@@ -275,9 +275,12 @@ public class Entrada {
      * @param s: Um objeto da classe Sistema.
      */
     public void fazerPedido(Aluno a, Sistema s){
+        s.listarSalas();
         Sala salaPedido = lerSala(s);
 
+
         Pedido pedido = new Pedido(a, salaPedido, s);
+        ArrayList<Item> carrinho = pedido.getCarrinho();
 
         String msg = "\n*********************\n" +
                 "Escolha uma opção:\n" +
@@ -288,14 +291,16 @@ public class Entrada {
 
         while (op != 2) {
             if (op == 1) {
-                ArrayList<Item> carrinho = pedido.getCarrinho();
+
+
                 s.listarProdutos();
 
-                String codProduto = this.lerLinha("Digite o código do produto: ");
-                Produto p = s.getProd(codProduto);
+                Item item = lerItem(s);
 
-                int qtdItens = this.lerInteiro("Digite a quantidade: ");
-                adicionarItem(carrinho,p, qtdItens);
+                carrinho.add(item);
+
+                String codProduto = item.getP().getCod();
+                s.getProd(codProduto).retirarDeEstoque(item.getQnt()); //Retira quantidade de produto do estoque
 
             }
             if (op > 2 || op < 1) System.out.println("Opção inválida. Tente novamente: ");
@@ -303,23 +308,36 @@ public class Entrada {
             op = this.lerInteiro(msg);
         }
 
-        s.addPedido(pedido);
-    }
 
-    public void adicionarItem(ArrayList<Item> carrinho, Produto p, int qntItens){
-        int qntProds = p.getQnt();
-        if (qntProds<qntItens){
-            System.out.println("Erro não há" + qntItens + "itens disponíveis no estoque.");
+
+        if(pedido.valorTotal() > a.getSaldo()){
+            System.out.println("O pedido não pode ser inserido, porque o aluno não tem mais crédito suficiente");
         }
         else{
-            Item novoItem = new Item(p, qntItens);
-            carrinho.add(novoItem);
-            p.retirarDeEstoque(qntItens);
+            a.retirarSaldo(pedido.valorTotal());
+            s.addPedido(pedido);
         }
+
+
+    }
+
+    private Item lerItem(Sistema s){
+
+        String codProduto = this.lerLinha("Digite o código do produto: ");
+        Produto p = s.getProd(codProduto);
+
+        int qntProds = s.getProd(codProduto).getQnt();
+        int qntProdCarrinho = this.lerInteiro("Digite a quantidade de " + p.toString());
+
+        while (qntProds<qntProdCarrinho) {
+            System.out.println("Erro não há" + qntProdCarrinho + "itens disponíveis no estoque.\nQuantidade disponível: "+qntProds);
+            qntProdCarrinho = this.lerInteiro("Digite a quantidade: ");
+        }
+
+        return new Item(p, qntProdCarrinho);
     }
 
     private Sala lerSala(Sistema s){
-        s.listarSalas();
 
         String nomeSala = this.lerLinha("Digite a sala: ");
         Sala salaEscolhida = s.getSala(nomeSala);
@@ -333,13 +351,69 @@ public class Entrada {
         }
     }
 
-    /*
-    public void listarPedidos(Aluno a, Sistema s){
-        System.out.println("Pedidos: ");
-        ArrayList<Pedido> pedidos = s.filtrarPedidos(a);
-        for(Pedido pedido : pedidos) {
-            System.out.println(pedido);
+    private Pedido lerPedido(Sistema s){
+
+        String codPedido = this.lerLinha("Digite o código do pedido: ");
+        Pedido pedidoEscolhido = s.getPedido(codPedido);
+
+        if (pedidoEscolhido != null) {
+            System.out.println("Pedido escolhido: " + pedidoEscolhido.getCod());
+            return pedidoEscolhido;
+        } else {
+            System.out.println("Pedido não encontrado.");
+            return null;
+        }
+
+    }
+
+
+    private void imprimirPedidos(ArrayList<Pedido> pedidos) {
+        for(Pedido pedido : pedidos){
+            System.out.println("Código do pedido: " + pedido.getCod());
+
+            System.out.println("Prdutos: ");
+            for(Item i : pedido.getCarrinho()){
+                System.out.println(i.getP().toString() + " (QTD: "+i.getQnt()+")");
+            }
+
+            System.out.print("Status: ");
+            if(pedido.isEntregue()){
+                System.out.println("Entregue");
+            }
+            else if(pedido.isEntregador()){
+                System.out.println("Em andamento");
+            }
+            else{
+                System.out.println("Em aberto");
+            }
+
+            System.out.printf("Valor Total: %.2f %n",pedido.valorTotal());
         }
     }
-    */
+
+    public void listarPedidos(Aluno a, Sistema s){
+        System.out.println("Pedidos de  "+a);
+        ArrayList<Pedido> pedidos = s.filtrarPedidos(a);
+        imprimirPedidos(pedidos);
+    }
+
+    public void entregarPedido(Aluno a,Sistema s){
+
+        ArrayList<Pedido> pedidos = s.filtrarPedidos(true);
+        imprimirPedidos(pedidos);
+
+        Pedido pedido = lerPedido(s);
+        pedido.setEntregador(a);
+        pedido.setEntregue(true);
+
+        System.out.println("Pedido entregue pelo entregador: "+a);
+
+    }
+
+
+    public void inserirCredito(Aluno a, Sistema s){
+        double valor = this.lerDouble("Digite um valor para adicionar: ");
+        a.inserirSaldo(valor);
+    }
+
 }
