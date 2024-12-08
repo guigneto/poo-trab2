@@ -17,8 +17,9 @@ public class Pedido {
     }
 
     public String toString(){ //TERMINAR DEPOIS
-        return "\n Informações do Pedido: \n"+
-                "Código: "+ this.cod+"\n"
+
+        return "Código do Pedido: "+ this.cod+"\n"
+                +"Produtos: "
                 + "Cliente: "+ this.cliente+"\n"
                 + "Entregador: "+ this.entregador+"\n"
                 + "Sala: "+ this.s+"\n"+
@@ -34,12 +35,36 @@ public class Pedido {
         return !(this.entregue) && this.entregador == null;
     }
 
+    public double valorTotal(){
+        double valor = 0;
+        for(Item i : carrinho){
+            valor += i.getP().getValor() * i.getQnt();
+        }
+        return valor+1;
+    }
+
     public String getCod() {
         return cod;
     }
 
     public Aluno getCliente() {
         return cliente;
+    }
+
+    public void setEntregador(Aluno entregador) {
+        this.entregador = entregador;
+    }
+
+    public void setEntregue(boolean entregue) {
+        this.entregue = entregue;
+    }
+
+    public boolean isEntregue() {
+        return entregue;
+    }
+
+    public boolean isEntregador(){
+        return this.entregador != null;
     }
 
     public ArrayList<Item> getCarrinho(){
