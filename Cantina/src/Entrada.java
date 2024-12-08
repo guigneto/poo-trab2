@@ -275,18 +275,9 @@ public class Entrada {
      * @param s: Um objeto da classe Sistema.
      */
     public void fazerPedido(Aluno a, Sistema s){
-        s.listarSalas();
+        Sala salaPedido = lerSala(s);
 
-        String nomeSala = this.lerLinha("Digite a sala: ");
-        Sala salaEscolhida = s.getSala(nomeSala);
-
-        if (salaEscolhida != null) {
-            System.out.println("Sala escolhida: " + salaEscolhida);
-        } else {
-            System.out.println("Sala não encontrada.");
-        }
-
-        Pedido pedido = new Pedido(a, salaEscolhida, s);
+        Pedido pedido = new Pedido(a, salaPedido, s);
 
         String msg = "\n*********************\n" +
                 "Escolha uma opção:\n" +
@@ -324,6 +315,21 @@ public class Entrada {
             Item novoItem = new Item(p, qntItens);
             carrinho.add(novoItem);
             p.retirarDeEstoque(qntItens);
+        }
+    }
+
+    private Sala lerSala(Sistema s){
+        s.listarSalas();
+
+        String nomeSala = this.lerLinha("Digite a sala: ");
+        Sala salaEscolhida = s.getSala(nomeSala);
+
+        if (salaEscolhida != null) {
+            System.out.println("Sala escolhida: " + salaEscolhida);
+            return salaEscolhida;
+        } else {
+            System.out.println("Sala não encontrada.");
+            return null;
         }
     }
 
