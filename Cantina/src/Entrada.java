@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Entrada {
     /**
      * Classe com as rotinas de entrada e saída do projeto
-     * @author Hilario Seibel Junior e Allicia Rocha e Guilherme Gomes
+     * @author Hilario Seibel Junior, Allicia Rocha e Guilherme Gomes
      */
 
     public Scanner input;
@@ -299,8 +299,6 @@ public class Entrada {
 
                 carrinho.add(item);
 
-                String codProduto = item.getP().getCod();
-                s.getProd(codProduto).retirarDeEstoque(item.getQnt()); //Retira quantidade de produto do estoque
 
             }
             if (op > 2 || op < 1) System.out.println("Opção inválida. Tente novamente: ");
@@ -314,7 +312,7 @@ public class Entrada {
             System.out.println("O pedido não pode ser inserido, porque o aluno não tem mais crédito suficiente");
         }
         else{
-            a.retirarSaldo(pedido.valorTotal());
+            pedido.confirmar();
             s.addPedido(pedido);
         }
 
@@ -403,8 +401,8 @@ public class Entrada {
         imprimirPedidos(pedidos);
 
         Pedido pedido = lerPedido(s);
-        pedido.setEntregador(a);
-        pedido.setEntregue(true);
+        pedido.atribuirEntregador(a);
+        pedido.marcarComoEntregue();
 
         System.out.println("Pedido entregue pelo entregador: "+a);
 
