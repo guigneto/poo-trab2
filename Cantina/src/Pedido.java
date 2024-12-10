@@ -19,7 +19,7 @@ public class Pedido {
     public String toString(){ //TERMINAR DEPOIS
 
 
-        String msg = "Codigo do pedido: " + cod;
+        String msg = "\nCodigo do pedido: " + cod;
 
         msg+="\nPrdutos: ";
         for(Item i : this.carrinho){
@@ -29,13 +29,13 @@ public class Pedido {
         msg+="\nStatus: ";
 
         if(this.isEntregue()){
-            msg+="Entregue";
+            msg+="Entregue\n";
         }
         else if(this.isEntregador()){
-            msg+="Em andamento";
+            msg+="Em andamento\n";
         }
         else{
-            msg+="Em aberto";
+            msg+="Em aberto\n";
         }
 
         msg += "Valor Total: R$" + String.format("%.2f", this.valorTotal());

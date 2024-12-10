@@ -364,41 +364,20 @@ public class Entrada {
 
     }
 
-
-    private void imprimirPedidos(ArrayList<Pedido> pedidos) {
-        for(Pedido pedido : pedidos){
-            System.out.println("Código do pedido: " + pedido.getCod());
-
-            System.out.println("Prdutos: ");
-            for(Item i : pedido.getCarrinho()){
-                System.out.println(i.getP().toString() + " (QTD: "+i.getQnt()+")");
-            }
-
-            System.out.print("Status: ");
-            if(pedido.isEntregue()){
-                System.out.println("Entregue");
-            }
-            else if(pedido.isEntregador()){
-                System.out.println("Em andamento");
-            }
-            else{
-                System.out.println("Em aberto");
-            }
-
-            System.out.printf("Valor Total: R$%.2f %n",pedido.valorTotal());
-        }
-    }
-
     public void listarPedidos(Aluno a, Sistema s){
         System.out.println("Pedidos de  "+a);
         ArrayList<Pedido> pedidos = s.filtrarPedidos(a);
-        imprimirPedidos(pedidos);
+        for (Pedido pedido : pedidos) {
+            System.out.println(pedido.toString());
+        }
     }
 
     public void entregarPedido(Aluno a,Sistema s){
 
         ArrayList<Pedido> pedidos = s.filtrarPedidos(true);
-        imprimirPedidos(pedidos);
+        for (Pedido pedido : pedidos) {
+            System.out.println(pedido.toString());
+        }
 
         Pedido pedido = lerPedido(s);
         pedido.atribuirEntregador(a);
