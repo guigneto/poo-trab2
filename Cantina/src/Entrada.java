@@ -385,7 +385,7 @@ public class Entrada {
                 System.out.println("Em aberto");
             }
 
-            System.out.printf("Valor Total: %.2f %n",pedido.valorTotal());
+            System.out.printf("Valor Total: R$%.2f %n",pedido.valorTotal());
         }
     }
 

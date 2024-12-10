@@ -38,7 +38,7 @@ public class Pedido {
             msg+="Em aberto";
         }
 
-        msg += "Valor Total: " + String.format("%.2f", this.valorTotal());
+        msg += "Valor Total: R$" + String.format("%.2f", this.valorTotal());
 
         return msg;
     }
