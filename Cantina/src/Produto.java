@@ -16,7 +16,7 @@ public class Produto {
     }
 
     public void retirarDeEstoque(int qnt){
-        this.qnt--;
+        this.qnt -= qnt;
     }
 
     public String getCod() {
