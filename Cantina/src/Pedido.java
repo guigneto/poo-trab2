@@ -18,13 +18,29 @@ public class Pedido {
 
     public String toString(){ //TERMINAR DEPOIS
 
-        return "Código do Pedido: "+ this.cod+"\n"
-                +"Produtos: "
-                + "Cliente: "+ this.cliente+"\n"
-                + "Entregador: "+ this.entregador+"\n"
-                + "Sala: "+ this.s+"\n"+
-                "Carrinho: "+ this.carrinho+"\n"+
-                "Entregue: "+ this.entregue;
+
+        String msg = "Codigo do pedido: " + cod;
+
+        msg+="\nPrdutos: ";
+        for(Item i : this.carrinho){
+            msg += "\n"+i.getP() + " (QTD: "+i.getQnt()+")";
+        }
+
+        msg+="\nStatus: ";
+
+        if(this.isEntregue()){
+            msg+="Entregue";
+        }
+        else if(this.isEntregador()){
+            msg+="Em andamento";
+        }
+        else{
+            msg+="Em aberto";
+        }
+
+        System.out.printf("Valor Total: %.2f %n",this.valorTotal());
+
+        return msg;
     }
 
     public void atribuirEntregador(Aluno a){
@@ -43,20 +59,23 @@ public class Pedido {
         return valor+1;
     }
 
+    public void confirmar(){
+        for(Item i : carrinho){
+            i.getP().retirarDeEstoque(i.getQnt());
+        }
+        cliente.retirarSaldo(this.valorTotal());
+    }
+
+    public void marcarComoEntregue() {
+        this.entregue = true;
+    }
+
     public String getCod() {
         return cod;
     }
 
     public Aluno getCliente() {
         return cliente;
-    }
-
-    public void setEntregador(Aluno entregador) {
-        this.entregador = entregador;
-    }
-
-    public void setEntregue(boolean entregue) {
-        this.entregue = entregue;
     }
 
     public boolean isEntregue() {
