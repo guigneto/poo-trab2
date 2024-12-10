@@ -38,7 +38,7 @@ public class Pedido {
             msg+="Em aberto";
         }
 
-        System.out.printf("Valor Total: %.2f %n",this.valorTotal());
+        msg += "Valor Total: " + String.format("%.2f", this.valorTotal());
 
         return msg;
     }
