@@ -53,10 +53,11 @@ public class Pedido {
 
     public double valorTotal(){
         double valor = 0;
+        double taxa = 1;
         for(Item i : carrinho){
             valor += i.getP().getValor() * i.getQnt();
         }
-        return valor+1;
+        return valor+taxa;
     }
 
     public void confirmar(){
@@ -64,6 +65,9 @@ public class Pedido {
             i.getP().retirarDeEstoque(i.getQnt());
         }
         cliente.retirarSaldo(this.valorTotal());
+
+        double valor = 0.80;
+        entregador.inserirSaldo(valor);
     }
 
     public void marcarComoEntregue() {
