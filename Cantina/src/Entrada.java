@@ -383,6 +383,9 @@ public class Entrada {
         pedido.atribuirEntregador(a);
         pedido.marcarComoEntregue();
 
+        double valor = 0.80;
+        pedido.getEntregador().inserirSaldo(valor);
+
         System.out.println("Pedido entregue pelo entregador: "+a);
 
     }

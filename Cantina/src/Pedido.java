@@ -65,9 +65,6 @@ public class Pedido {
             i.getP().retirarDeEstoque(i.getQnt());
         }
         cliente.retirarSaldo(this.valorTotal());
-
-        double valor = 0.80;
-        entregador.inserirSaldo(valor);
     }
 
     public void marcarComoEntregue() {
@@ -92,5 +89,9 @@ public class Pedido {
 
     public ArrayList<Item> getCarrinho(){
         return this.carrinho;
+    }
+
+    public Aluno getEntregador(){
+        return entregador;
     }
 }
