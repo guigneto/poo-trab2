@@ -51,6 +51,7 @@ public class Entrada {
                     Aluno aluno = new Aluno(cpf, nome, senha);
                     s.addAluno(aluno);
                 } else if (tipo.equals("FIM")) {
+                    System.out.println("Dados carregados com sucesso!");
                     break;
                 }
             }
@@ -133,7 +134,7 @@ public class Entrada {
                     default:
                         System.out.println("Opção inválida. Tente novamente.");
                 }
-            } catch (InputMismatchException | NumberFormatException e) {
+            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
                 System.out.println("Entrada inválida. Digite um número válido.");
             }
         } while (op != 0);
@@ -161,7 +162,7 @@ public class Entrada {
                     try {
                         op = this.lerInteiro(msg);
                         break; // Sai do loop se a entrada for válida
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
                         System.out.println("Entrada inválida. Digite um número.");
                     }
                 }
@@ -186,8 +187,11 @@ public class Entrada {
                         System.out.println("Opção inválida. Tente novamente.");
                 }
 
-            op = this.lerInteiro(msg);
-        }
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } while (op != 0);
     }
 
     /**
@@ -212,7 +216,7 @@ public class Entrada {
                     try {
                         op = this.lerInteiro(msg);
                         break; // Sai do loop se a entrada for válida
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
                         System.out.println("Entrada inválida. Digite um número.");
                     }
                 }
@@ -328,18 +332,21 @@ public class Entrada {
     public void cadProduto(Sistema s){
         System.out.println("\n** Cadastrando um novo produto **\n");
         String nome = this.lerLinha("Digite o nome do produto: ");
+        try {
+            while (s.getProd(nome) != null) {
+                nome = this.lerLinha("Produto já existente. Indique outro produto: ");
+            }
 
-        while (s.getProd(nome) != null) {
-            nome = this.lerLinha("Produto já existente. Indique outro produto: ");
+            int qtd = this.lerInteiro("Digite a quantidade em estoque: ");
+            double valor = this.lerDouble("Digite o valor unitário do produto: ");
+
+            Produto p = new Produto(nome, qtd, valor, s);
+            s.addProd(p);
+
+            System.out.println(p + " criado com sucesso.");
+        } catch(IllegalArgumentException | StringIndexOutOfBoundsException e) {
+            System.out.println("Erro: Digite um número");
         }
-
-        int qtd = this.lerInteiro("Digite a quantidade em estoque: ");
-        double valor = this.lerDouble("Digite o valor unitário do produto: ");
-
-        Produto p = new Produto(nome, qtd, valor,s);
-        s.addProd(p);
-
-        System.out.println(p + " criado com sucesso.");
     }
 
     /**
@@ -369,8 +376,13 @@ public class Entrada {
      * @param s: Um objeto da classe Sistema.
      */
     public void fazerPedido(Aluno a, Sistema s){
+
         s.listarSalas();
         Sala salaPedido = lerSala(s);
+
+        if(salaPedido == null){
+            return;
+        }
 
 
         Pedido pedido = new Pedido(a, salaPedido, s);
@@ -381,24 +393,24 @@ public class Entrada {
                 "1) Inserir produto no carrinho.\n" +
                 "2) Fechar pedido.\n";
 
+
         int op = this.lerInteiro(msg);
 
         while (op != 2) {
-            if (op == 1) {
+            try {
+                op = this.lerInteiro(msg);
+                if (op == 1) {
+                    s.listarProdutos();
+                    Item item = lerItem(s);
+                    carrinho.add(item);
+                }
 
-
-                s.listarProdutos();
-
-                Item item = lerItem(s);
-
-                carrinho.add(item);
-
-
+                if (op > 2 || op < 1) System.out.println("Opção inválida. Tente novamente: ");
+            } catch(IllegalArgumentException | StringIndexOutOfBoundsException e){
+                System.out.println("Opção inválida");
             }
-            if (op > 2 || op < 1) System.out.println("Opção inválida. Tente novamente: ");
-
-            op = this.lerInteiro(msg);
         }
+
 
 
 
@@ -413,17 +425,37 @@ public class Entrada {
 
     }
 
-    private Item lerItem(Sistema s){
-
+    private Item lerItem(Sistema s) {
         String codProduto = this.lerLinha("Digite o código do produto: ");
         Produto p = s.getProd(codProduto);
 
-        int qntProds = s.getProd(codProduto).getQnt();
-        int qntProdCarrinho = this.lerInteiro("Digite a quantidade de " + p.toString());
+        if (p == null) {
+            System.out.println("Erro: Produto não encontrado.");
+            return null;
+        }
 
-        while (qntProds<qntProdCarrinho) {
-            System.out.println("Erro não há" + qntProdCarrinho + "itens disponíveis no estoque.\nQuantidade disponível: "+qntProds);
-            qntProdCarrinho = this.lerInteiro("Digite a quantidade: ");
+        int qntProds = p.getQnt();
+        int qntProdCarrinho = 0;
+
+        while (true) {
+            try {
+                qntProdCarrinho = this.lerInteiro("Digite a quantidade de " + p.toString() + ": ");
+
+                if (qntProdCarrinho <= 0) {
+                    System.out.println("Erro: A quantidade deve ser maior que zero.");
+                    continue;
+                }
+
+                if (qntProdCarrinho > qntProds) {
+                    System.out.println("Erro: Não há " + qntProdCarrinho + " itens disponíveis no estoque.");
+                    System.out.println("Quantidade disponível: " + qntProds);
+                    continue;
+                }
+
+                break; // Sai do loop se a entrada for válida
+            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+                System.out.println("Entrada inválida. Digite um número inteiro.");
+            }
         }
 
         return new Item(p, qntProdCarrinho);
@@ -466,22 +498,37 @@ public class Entrada {
         }
     }
 
-    public void entregarPedido(Aluno a,Sistema s){
-
+    public void entregarPedido(Aluno a, Sistema s) {
         ArrayList<Pedido> pedidos = s.filtrarPedidos(true);
-        for (Pedido pedido : pedidos) {
-            System.out.println(pedido.toString());
+
+        // Exibe os pedidos disponíveis para entrega
+        if (pedidos.isEmpty()) {
+            System.out.println("Nenhum pedido disponível para entrega.");
+            return;
         }
 
-        Pedido pedido = lerPedido(s);
-        pedido.atribuirEntregador(a);
-        pedido.marcarComoEntregue();
+        for (Pedido p : pedidos) {
+            System.out.println(p.toString());
+        }
 
+        // Solicita o pedido a ser entregue
+        Pedido pedidoEscolhido = lerPedido(s);
+
+        if (pedidoEscolhido == null) {
+            System.out.println("Pedido não encontrado ou erro na seleção.");
+            return;
+        }
+
+        // Atribui o entregador ao pedido e marca como entregue
+        pedidoEscolhido.atribuirEntregador(a);
+        pedidoEscolhido.marcarComoEntregue();
+
+        // Registra o valor da entrega e adiciona ao saldo do entregador
         double valor = 0.80;
-        pedido.getEntregador().inserirSaldo(valor);
+        a.inserirSaldo(valor); // Usando `a` para inserir o valor no saldo do aluno
 
-        System.out.println("Pedido entregue pelo entregador: "+a);
-
+        System.out.println("Pedido entregue com sucesso pelo entregador: " + a);
+        System.out.println("Valor de entrega de R$ " + valor + " adicionado ao saldo.");
     }
 
 
@@ -490,7 +537,7 @@ public class Entrada {
             double valor = this.lerDouble("Digite um valor para adicionar: ");
             a.inserirSaldo(valor);
             System.out.printf("Saldo de R$%.2f adicionado na conta de %s com sucesso.",valor,a.nome);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
             System.out.println("Valor inválido, transação incompleta");
         }
     }
