@@ -33,13 +33,17 @@ public class Item implements Comparable<Item> {
     }
 
     public int compareTo(Item outroItem) {
-        // Primeiro critério: Ordenação pela quantidade de produtos diferentes (mais produtos vêm primeiro)
-        int qntCompare = Integer.compare(outroItem.getQnt(), this.qnt);
-        if (qntCompare != 0) {
-            return qntCompare; // Se houver diferença na quantidade, retornamos essa diferença
+        if (outroItem == null) {
+            throw new NullPointerException("O item de comparação não pode ser nulo.");
         }
 
-        // Segundo critério: Ordenação pelo valor total do pedido (mais caro vem primeiro)
+        // ordenação pela quantidade de produtos diferentes (mais produtos vêm primeiro)
+        int qntCompare = Integer.compare(outroItem.getQnt(), this.qnt);
+        if (qntCompare != 0) {
+            return qntCompare;
+        }
+
+        // ordenação pelo valor total do pedido (mais caro vem primeiro)
         return Double.compare(outroItem.valorTotal(), this.valorTotal());
     }
 }

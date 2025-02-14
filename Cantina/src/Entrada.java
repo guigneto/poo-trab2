@@ -203,48 +203,46 @@ public class Entrada {
         int op = -1;
 
         do {
-            try {
-                String msg = "\n*********************\n" +
-                        "Escolha uma opção:\n" +
-                        "1) Fazer pedido.\n" +
-                        "2) Fazer entrega.\n" +
-                        "3) Meus pedidos.\n" +
-                        "4) Inserir crédito.\n" +
-                        "0) Logout.\n";
 
-                while (true) { // Garante que só sai quando a entrada for válida
-                    try {
-                        op = this.lerInteiro(msg);
-                        break; // Sai do loop se a entrada for válida
-                    } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                        System.out.println("Entrada inválida. Digite um número.");
-                    }
+            String msg = "\n*********************\n" +
+                    "Escolha uma opção:\n" +
+                    "1) Fazer pedido.\n" +
+                    "2) Fazer entrega.\n" +
+                    "3) Meus pedidos.\n" +
+                    "4) Inserir crédito.\n" +
+                    "0) Logout.\n";
+
+            while (true) { // Garante que só sai quando a entrada for válida
+                try {
+                    op = this.lerInteiro(msg);
+                    break; // Sai do loop se a entrada for válida
+                } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+                    System.out.println("Entrada inválida. Digite um número.");
                 }
-
-                switch (op) {
-                    case 1:
-                        fazerPedido(a, s);
-                        break;
-                    case 2:
-                        entregarPedido(a, s);
-                        break;
-                    case 3:
-                        listarPedidos(a, s);
-                        break;
-                    case 4:
-                        inserirCredito(a, s);
-                        break;
-                    case 0:
-                        System.out.println("Logout realizado com sucesso.");
-                        return; // Sai do menu
-                    default:
-                        System.out.println("Opção inválida. Tente novamente.");
-                }
-
-            } catch (Exception e) {
-                System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
-                e.printStackTrace();
             }
+
+            switch (op) {
+                case 1:
+                    fazerPedido(a, s);
+                    break;
+                case 2:
+                    entregarPedido(a, s);
+                    break;
+                case 3:
+                    listarPedidos(a, s);
+                    break;
+                case 4:
+                    inserirCredito(a, s);
+                    break;
+                case 0:
+                    System.out.println("Logout realizado com sucesso.");
+                    return; // Sai do menu
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+
+
+
         } while (op != 0);
     }
 
@@ -354,16 +352,23 @@ public class Entrada {
      * @param s: Um objeto da classe Sistema
      */
     public void cadSala(Sistema s){
-        System.out.println("\n** Cadastrando uma nova sala **\n");
-        String bloco = this.lerLinha("Digite o bloco (ex: para 904T, digite 9): ");
+        try{
+            System.out.println("\n** Cadastrando uma nova sala **\n");
+            String bloco = this.lerLinha("Digite o bloco (ex: para 904T, digite 9): ");
+            String sala = this.lerLinha("Digite a sala (ex: para 904T, digite 04): ");
+            String andar = this.lerLinha("Digite o andar (ex: para 904T, digite T): ");
 
-        String sala = this.lerLinha("Digite a sala (ex: para 904T, digite 04): ");
-        String andar = this.lerLinha("Digite o andar (ex: para 904T, digite T): ");
+            if (bloco.isEmpty() || sala.isEmpty() || andar.isEmpty()) {
+                throw new IllegalArgumentException("Bloco, sala e andar não podem estar vazios.");
+            }
 
-        Sala c = new Sala(bloco, sala, andar);
-        s.addSala(c);
+            Sala c = new Sala(bloco, sala, andar);
+            s.addSala(c);
 
-        System.out.println("Sala " + c + " criada com sucesso.");
+            System.out.println("Sala " + c + " criada com sucesso.");
+        } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+            System.out.println("Entrada inválida");
+        }
     }
 
     /***************/
@@ -408,6 +413,7 @@ public class Entrada {
                 if (op > 2 || op < 1) System.out.println("Opção inválida. Tente novamente: ");
             } catch(IllegalArgumentException | StringIndexOutOfBoundsException e){
                 System.out.println("Opção inválida");
+                return;
             }
         }
 
@@ -454,7 +460,7 @@ public class Entrada {
 
                 break; // Sai do loop se a entrada for válida
             } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                System.out.println("Entrada inválida. Digite um número inteiro.");
+                System.out.println("Entrada inválida.");
             }
         }
 
@@ -487,7 +493,6 @@ public class Entrada {
             System.out.println("Pedido não encontrado.");
             return null;
         }
-
     }
 
     public void listarPedidos(Aluno a, Sistema s){
@@ -499,34 +504,40 @@ public class Entrada {
     }
 
     public void entregarPedido(Aluno a, Sistema s) {
-        ArrayList<Pedido> pedidos = s.filtrarPedidos(true);
+        double valor = 0;
+        try {
+            ArrayList<Pedido> pedidos = s.filtrarPedidos(true);
 
-        // Exibe os pedidos disponíveis para entrega
-        if (pedidos.isEmpty()) {
-            System.out.println("Nenhum pedido disponível para entrega.");
-            return;
+            // Exibe os pedidos disponíveis para entrega
+            if (pedidos.isEmpty()) {
+                System.out.println("Nenhum pedido disponível para entrega.");
+                return;
+            }
+
+            for (Pedido p : pedidos) {
+                System.out.println(p.toString());
+            }
+
+            // Solicita o pedido a ser entregue
+            Pedido pedidoEscolhido = lerPedido(s);
+
+            if (pedidoEscolhido == null) {
+                System.out.println("Pedido não encontrado ou erro na seleção.");
+                return;
+            }
+
+            // Atribui o entregador ao pedido e marca como entregue
+            pedidoEscolhido.atribuirEntregador(a);
+            pedidoEscolhido.marcarComoEntregue();
+
+            // Registra o valor da entrega e adiciona ao saldo do entregador
+            valor = 0.80;
+            a.inserirSaldo(valor); // Usando `a` para inserir o valor no saldo do aluno
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro inesperado ao entregar pedido: " + e.getMessage());
         }
-
-        for (Pedido p : pedidos) {
-            System.out.println(p.toString());
-        }
-
-        // Solicita o pedido a ser entregue
-        Pedido pedidoEscolhido = lerPedido(s);
-
-        if (pedidoEscolhido == null) {
-            System.out.println("Pedido não encontrado ou erro na seleção.");
-            return;
-        }
-
-        // Atribui o entregador ao pedido e marca como entregue
-        pedidoEscolhido.atribuirEntregador(a);
-        pedidoEscolhido.marcarComoEntregue();
-
-        // Registra o valor da entrega e adiciona ao saldo do entregador
-        double valor = 0.80;
-        a.inserirSaldo(valor); // Usando `a` para inserir o valor no saldo do aluno
-
         System.out.println("Pedido entregue com sucesso pelo entregador: " + a);
         System.out.println("Valor de entrega de R$ " + valor + " adicionado ao saldo.");
     }

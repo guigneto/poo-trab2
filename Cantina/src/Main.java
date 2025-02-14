@@ -10,10 +10,8 @@ public class Main {
         Entrada e = new Entrada();
 
         e.carregarDadosDoArquivo(s);
-        try {
-            e.menu(s);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+
+        e.menu(s);
+
     }
 }

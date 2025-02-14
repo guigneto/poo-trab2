@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class Pedido {
     private String cod;
@@ -10,9 +11,9 @@ public class Pedido {
     private boolean entregue;
 
     public Pedido(Aluno cliente, Sala sala, Sistema s) {
-        this.cod = s.gerarCodigoPedido();
-        this.cliente = cliente;
-        this.s = sala;
+        this.cod = Objects.requireNonNull(s, "O sistema não pode ser nulo.").gerarCodigoPedido();
+        this.cliente = Objects.requireNonNull(cliente, "O cliente não pode ser nulo.");
+        this.s = Objects.requireNonNull(sala, "A sala não pode ser nula.");
         this.carrinho = new ArrayList<>();
         this.entregue = false;
     }
@@ -46,7 +47,7 @@ public class Pedido {
     }
 
     public void atribuirEntregador(Aluno a){
-        this.entregador = a;
+        this.entregador = Objects.requireNonNull(a, "O entregador não pode ser nulo.");
     }
 
     public boolean disponivel(){ //TESTAR SE TA CERTO
@@ -63,6 +64,12 @@ public class Pedido {
     }
 
     public void confirmar(){
+        if (cliente == null) {
+            throw new IllegalStateException("O cliente não pode ser nulo ao confirmar o pedido.");
+        }
+        if (carrinho.isEmpty()) {
+            throw new IllegalStateException("O carrinho não pode estar vazio ao confirmar o pedido.");
+        }
         for(Item i : carrinho){
             i.getP().retirarDeEstoque(i.getQnt());
         }
@@ -70,6 +77,9 @@ public class Pedido {
     }
 
     public void marcarComoEntregue() {
+        if (this.entregador == null) {
+            throw new IllegalStateException("O pedido não pode ser marcado como entregue sem um entregador.");
+        }
         this.entregue = true;
     }
 
