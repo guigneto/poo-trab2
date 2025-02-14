@@ -145,22 +145,46 @@ public class Entrada {
      * @param s: Objeto a classe Sistema.
      */
     public void menu(Admin a, Sistema s) {
-        String msg = "\n*********************\n" +
-                "Escolha uma opção:\n" +
-                "1) Cadastrar novo administrador.\n" +
-                "2) Cadastrar aluno.\n" +
-                "3) Cadastrar produto.\n" +
-                "4) Cadastrar sala.\n" +
-                "0) Logout.\n";
+        int op = -1;
 
-        int op = this.lerInteiro(msg);
+        do {
+            try {
+                String msg = "\n*********************\n" +
+                        "Escolha uma opção:\n" +
+                        "1) Cadastrar novo administrador.\n" +
+                        "2) Cadastrar aluno.\n" +
+                        "3) Cadastrar produto.\n" +
+                        "4) Cadastrar sala.\n" +
+                        "0) Logout.\n";
 
-        while (op != 0) {
-            if (op == 1) cadAdmin(s);
-            if (op == 2) cadAluno(s);
-            if (op == 3) cadProduto(s);
-            if (op == 4) cadSala(s);
-            if (op < 0 || op > 4) System.out.println("Opção inválida. Tente novamente: ");
+                while (true) { // Garante que só sai quando a entrada for válida
+                    try {
+                        op = this.lerInteiro(msg);
+                        break; // Sai do loop se a entrada for válida
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Entrada inválida. Digite um número.");
+                    }
+                }
+
+                switch (op) {
+                    case 1:
+                        cadAdmin(s);
+                        break;
+                    case 2:
+                        cadAluno(s);
+                        break;
+                    case 3:
+                        cadProduto(s);
+                        break;
+                    case 4:
+                        cadSala(s);
+                        break;
+                    case 0:
+                        System.out.println("Logout realizado com sucesso.");
+                        return; // Sai do menu
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                }
 
             op = this.lerInteiro(msg);
         }
@@ -172,25 +196,52 @@ public class Entrada {
      * @param s: Objeto a classe Sistema.
      */
     public void menu(Aluno a, Sistema s) {
-        String msg = "\n*********************\n" +
-                "Escolha uma opção:\n" +
-                "1) Fazer pedido.\n" +
-                "2) Fazer entrega.\n" +
-                "3) Meus pedidos.\n" +
-                "4) Inserir crédito.\n" +
-                "0) Logout.\n";
+        int op = -1;
 
-        int op = this.lerInteiro(msg);
+        do {
+            try {
+                String msg = "\n*********************\n" +
+                        "Escolha uma opção:\n" +
+                        "1) Fazer pedido.\n" +
+                        "2) Fazer entrega.\n" +
+                        "3) Meus pedidos.\n" +
+                        "4) Inserir crédito.\n" +
+                        "0) Logout.\n";
 
-        while (op != 0) {
-            if (op == 1) { fazerPedido(a, s);}
-            if (op == 2) {entregarPedido(a, s);}
-            if (op == 3) {listarPedidos(a, s);}
-            if (op == 4) {inserirCredito(a, s);}
-            if (op < 0 || op > 4) System.out.println("Opção inválida. Tente novamente: ");
+                while (true) { // Garante que só sai quando a entrada for válida
+                    try {
+                        op = this.lerInteiro(msg);
+                        break; // Sai do loop se a entrada for válida
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Entrada inválida. Digite um número.");
+                    }
+                }
 
-            op = this.lerInteiro(msg);
-        }
+                switch (op) {
+                    case 1:
+                        fazerPedido(a, s);
+                        break;
+                    case 2:
+                        entregarPedido(a, s);
+                        break;
+                    case 3:
+                        listarPedidos(a, s);
+                        break;
+                    case 4:
+                        inserirCredito(a, s);
+                        break;
+                    case 0:
+                        System.out.println("Logout realizado com sucesso.");
+                        return; // Sai do menu
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } while (op != 0);
     }
 
     /**
