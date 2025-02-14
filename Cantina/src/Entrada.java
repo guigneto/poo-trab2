@@ -1,6 +1,8 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -70,6 +72,33 @@ public class Entrada {
     /** MENUS DO SISTEMA **/
     /**********************/
 
+    public void carregarDadosDoArquivo(Sistema s) {
+        File arquivo = new File("Cantina/dados.txt");
+        try (Scanner scanner = new Scanner(arquivo)) {
+            while (scanner.hasNextLine()) {
+                String tipo = scanner.nextLine();
+                if (tipo.equals("ADM")) {
+                    String cpf = scanner.nextLine();
+                    String nome = scanner.nextLine();
+                    String senha = scanner.nextLine();
+                    String email = scanner.nextLine();
+                    Admin admin = new Admin(cpf, nome, senha, email);
+                    s.addAdmin(admin);
+                } else if (tipo.equals("ALU")) {
+                    String cpf = scanner.nextLine();
+                    String nome = scanner.nextLine();
+                    String senha = scanner.nextLine();
+                    Aluno aluno = new Aluno(cpf, nome, senha);
+                    s.addAluno(aluno);
+                } else if (tipo.equals("FIM")) {
+                    break;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Arquivo dados.txt não encontrado.");
+        }
+    }
+
     /**
      * Exibe o menu principal até que o usuário opte por sair do programa.
      * @param s: Objeto a classe Sistema.
@@ -80,20 +109,32 @@ public class Entrada {
             this.cadAdmin(s);
         }
 
-        String msg = "\n*********************\n" +
-                "Escolha uma opção:\n" +
-                "1) Login.\n" +
-                "0) Sair.\n";
+        int op = -1; // Inicializa com valor inválido para garantir a entrada no loop
 
-        int op = this.lerInteiro(msg);
+        do {
+            try {
+                // Exibe a mensagem apenas quando não houver exceção
+                System.out.println("\n*********************");
+                System.out.println("Escolha uma opção:");
+                System.out.println("1) Login.");
+                System.out.println("0) Sair.");
 
-        while (op != 0) {
-            if (op == 1) login(s);
-            else System.out.println("Opção inválida. Tente novamente: ");
+                op = this.lerInteiro("Digite sua opção: "); // Apenas a entrada
 
-            op = this.lerInteiro(msg);
-        }
-
+                switch (op) {
+                    case 1:
+                        login(s);
+                        break;
+                    case 0:
+                        System.out.println("Saindo do sistema...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                }
+            } catch (InputMismatchException | NumberFormatException e) {
+                System.out.println("Entrada inválida. Digite um número válido.");
+            }
+        } while (op != 0);
     }
 
     /**
