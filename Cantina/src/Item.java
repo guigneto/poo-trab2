@@ -5,6 +5,13 @@ public class Item implements Comparable<Item> {
     private int qnt;
 
     public Item(Produto p, int qnt) {
+        if (p == null) {
+            throw new IllegalArgumentException("O produto não pode ser nulo.");
+        }
+        if (qnt <= 0) {
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
+        }
+
         this.p = p;
         this.qnt = qnt;
     }
