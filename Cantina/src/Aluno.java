@@ -10,11 +10,18 @@ public class Aluno extends Usuario{
         return saldo;
     }
 
-    public void inserirSaldo(double valor) {
+    public void inserirSaldo(double valor) throws IllegalArgumentException {
+        if (valor <= 0) {
+            throw new IllegalArgumentException("O valor de depósito deve ser positivo.");
+        }
         this.saldo += valor;
     }
 
-    public boolean retirarSaldo(double valor) {
+    public boolean retirarSaldo(double valor) throws IllegalArgumentException {
+        if (valor <= 0) {
+            throw new IllegalArgumentException("O valor do saque deve ser positivo.");
+        }
+
         if(valor <= this.saldo){
             this.saldo -= valor;
             System.out.println("Saque na conta do aluno " + this.nome + " realizado com sucesso. Novo saldo: " + this.saldo);
