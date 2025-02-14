@@ -1,4 +1,4 @@
-public class Usuario {
+public abstract class Usuario {
     protected String cpf, nome;
     private String senha;
 
