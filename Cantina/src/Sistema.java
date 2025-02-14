@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Collections;
 
 public class Sistema {
     private ArrayList<Aluno> alunos;
@@ -125,7 +126,4 @@ public class Sistema {
         }
         return pedidosFiltrados;
     }
-
-
-
 }
