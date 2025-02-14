@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Pedido {
     private String cod;
@@ -18,6 +19,7 @@ public class Pedido {
 
     public String toString(){ //TERMINAR DEPOIS
 
+        Collections.sort(carrinho);
 
         String msg = "\nCodigo do pedido: " + cod;
 
