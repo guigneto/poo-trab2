@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Sistema {
     private ArrayList<Aluno> alunos;
@@ -14,6 +17,8 @@ public class Sistema {
         this.pedidos = new ArrayList<>();
         this.salas = new ArrayList<>();
     }
+
+
 
     public void addAdmin(Admin a) {
         this.adms.add(a);
@@ -120,4 +125,7 @@ public class Sistema {
         }
         return pedidosFiltrados;
     }
+
+
+
 }
