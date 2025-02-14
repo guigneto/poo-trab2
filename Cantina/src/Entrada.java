@@ -1,10 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Entrada {
     /**
@@ -29,6 +26,39 @@ public class Entrada {
             this.input = new Scanner(System.in).useLocale(Locale.US);
         }
     }
+
+    /**
+     * Carrega dados.txt
+     * Se houver um arquivo dados.txt, carrega eles no sistema
+    */
+
+    public void carregarDadosDoArquivo(Sistema s) {
+        File arquivo = new File("Cantina/dados.txt");
+        try (Scanner scanner = new Scanner(arquivo)) {
+            while (scanner.hasNextLine()) {
+                String tipo = scanner.nextLine();
+                if (tipo.equals("ADM")) {
+                    String cpf = scanner.nextLine();
+                    String nome = scanner.nextLine();
+                    String senha = scanner.nextLine();
+                    String email = scanner.nextLine();
+                    Admin admin = new Admin(cpf, nome, senha, email);
+                    s.addAdmin(admin);
+                } else if (tipo.equals("ALU")) {
+                    String cpf = scanner.nextLine();
+                    String nome = scanner.nextLine();
+                    String senha = scanner.nextLine();
+                    Aluno aluno = new Aluno(cpf, nome, senha);
+                    s.addAluno(aluno);
+                } else if (tipo.equals("FIM")) {
+                    break;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Arquivo dados.txt não encontrado.");
+        }
+    }
+
 
     /**
      * Faz a leitura de uma linha inteira
@@ -71,34 +101,6 @@ public class Entrada {
     /**********************/
     /** MENUS DO SISTEMA **/
     /**********************/
-
-    public void carregarDadosDoArquivo(Sistema s) {
-        File arquivo = new File("Cantina/dados.txt");
-        try (Scanner scanner = new Scanner(arquivo)) {
-            while (scanner.hasNextLine()) {
-                String tipo = scanner.nextLine();
-                if (tipo.equals("ADM")) {
-                    String cpf = scanner.nextLine();
-                    String nome = scanner.nextLine();
-                    String senha = scanner.nextLine();
-                    String email = scanner.nextLine();
-                    Admin admin = new Admin(cpf, nome, senha, email);
-                    s.addAdmin(admin);
-                } else if (tipo.equals("ALU")) {
-                    String cpf = scanner.nextLine();
-                    String nome = scanner.nextLine();
-                    String senha = scanner.nextLine();
-                    Aluno aluno = new Aluno(cpf, nome, senha);
-                    s.addAluno(aluno);
-                } else if (tipo.equals("FIM")) {
-                    break;
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Arquivo dados.txt não encontrado.");
-        }
-    }
-
     /**
      * Exibe o menu principal até que o usuário opte por sair do programa.
      * @param s: Objeto a classe Sistema.
@@ -433,8 +435,13 @@ public class Entrada {
 
 
     public void inserirCredito(Aluno a, Sistema s){
-        double valor = this.lerDouble("Digite um valor para adicionar: ");
-        a.inserirSaldo(valor);
+        try {
+            double valor = this.lerDouble("Digite um valor para adicionar: ");
+            a.inserirSaldo(valor);
+            System.out.printf("Saldo de R$%.2f adicionado na conta de %s com sucesso.",valor,a.nome);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Valor inválido, transação incompleta");
+        }
     }
 
 }
